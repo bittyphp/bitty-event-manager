@@ -170,18 +170,3 @@ $eventManager->attach('some.event', function (EventInterface $event) {
 
 $eventManager->trigger('some.event');
 ```
-
-## Portability
-
-If you want to use the event manager outside of the Bitty application, it can be easily registered to any other service container that supports the [service provider interface](https://github.com/container-interop/service-provider) `Interop\Container\ServiceProviderInterface`.
-
-```php
-<?php
-
-use Acme\Container;
-use Bitty\EventManager\EventManagerServiceProvider;
-
-$container = new Container();
-
-$container->register([new EventManagerServiceProvider()]);
-```
