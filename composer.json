@@ -9,13 +9,8 @@
             "email": "bizurkur@gmail.com"
         }
     ],
-    "config": {
-        "platform": {
-            "php": "5.5.9"
-        }
-    },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.0",
@@ -31,5 +26,5 @@
             "Bitty\\Tests\\EventManager\\": "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
