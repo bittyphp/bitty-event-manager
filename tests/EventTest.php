@@ -4,7 +4,7 @@ namespace Bitty\Tests\EventManager;
 
 use Bitty\EventManager\Event;
 use Bitty\EventManager\EventInterface;
-use Bitty\Tests\EventManager\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class EventTest extends TestCase
 {
@@ -42,7 +42,8 @@ class EventTest extends TestCase
 
         $message = 'Event name "'.$name.'" is invalid. Only alpha-numeric '
             .'characters, underscores, and periods allowed';
-        $this->setExpectedException(\InvalidArgumentException::class, $message);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
 
         $this->fixture->setName($name);
     }

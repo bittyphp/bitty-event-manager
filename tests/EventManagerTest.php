@@ -7,7 +7,7 @@ use Bitty\EventManager\EventInterface;
 use Bitty\EventManager\EventManager;
 use Bitty\EventManager\EventManagerInterface;
 use Bitty\Tests\EventManager\Stubs\InvokableStubInterface;
-use Bitty\Tests\EventManager\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class EventManagerTest extends TestCase
 {
