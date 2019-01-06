@@ -7,5 +7,5 @@ interface InvokableStubInterface
     /**
      * Mock invokable.
      */
-    public function __invoke();
+    public function __invoke(): callable;
 }

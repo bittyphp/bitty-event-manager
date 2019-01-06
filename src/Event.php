@@ -27,16 +27,13 @@ class Event implements EventInterface
     protected $isPropagationStopped = false;
 
     /**
-     * @param string|null $name
+     * @param string $name
      * @param null|string|object $target
      * @param mixed[] $params
      */
-    public function __construct($name = null, $target = null, array $params = [])
+    public function __construct(string $name, $target = null, array $params = [])
     {
-        if (null !== $name) {
-            $this->setName($name);
-        }
-
+        $this->setName($name);
         $this->setTarget($target);
         $this->setParams($params);
     }
@@ -44,7 +41,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         if (!preg_match("/^[A-Za-z0-9_\.]+$/", $name)) {
             throw new \InvalidArgumentException(
@@ -62,7 +59,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -70,7 +67,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function setTarget($target)
+    public function setTarget($target): void
     {
         $this->target = $target;
     }
@@ -86,7 +83,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function setParams(array $params)
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }
@@ -94,7 +91,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -102,7 +99,7 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function getParam($name)
+    public function getParam(string $name)
     {
         if (isset($this->params[$name]) || array_key_exists($name, $this->params)) {
             return $this->params[$name];
@@ -112,15 +109,15 @@ class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function stopPropagation($flag)
+    public function stopPropagation(bool $flag): void
     {
-        $this->isPropagationStopped = (bool) $flag;
+        $this->isPropagationStopped = $flag;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function isPropagationStopped()
+    public function isPropagationStopped(): bool
     {
         return $this->isPropagationStopped;
     }
