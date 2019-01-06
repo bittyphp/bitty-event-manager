@@ -236,6 +236,9 @@ class EventManagerTest extends TestCase
                 $params   = $event->getParams();
                 $params[] = $name;
                 $event->setParams($params);
+
+                return function () {
+                };
             }
         );
 

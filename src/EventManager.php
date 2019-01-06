@@ -84,7 +84,7 @@ class EventManager implements EventManagerInterface
         if ($event instanceof EventInterface) {
             $name = $event->getName();
         } else {
-            $name = $event;
+            $name  = $event;
             $event = new Event($name, $target, $params);
         }
 
