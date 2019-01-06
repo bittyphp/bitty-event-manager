@@ -16,7 +16,7 @@ class EventManager implements EventManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function attach($event, $callback, $priority = 0)
+    public function attach(string $event, callable $callback, int $priority = 0): bool
     {
         $events = [];
         if (isset($this->events[$event])) {
@@ -44,7 +44,7 @@ class EventManager implements EventManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function detach($event, $callback)
+    public function detach(string $event, callable $callback): bool
     {
         if (!isset($this->events[$event])) {
             return false;
@@ -69,7 +69,7 @@ class EventManager implements EventManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function clearListeners($event)
+    public function clearListeners(string $event): void
     {
         if (isset($this->events[$event])) {
             unset($this->events[$event]);
@@ -81,10 +81,10 @@ class EventManager implements EventManagerInterface
      */
     public function trigger($event, $target = null, array $params = [])
     {
-        $name = $event;
         if ($event instanceof EventInterface) {
             $name = $event->getName();
         } else {
+            $name  = $event;
             $event = new Event($name, $target, $params);
         }
 

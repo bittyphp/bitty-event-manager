@@ -4,7 +4,7 @@ namespace Bitty\Tests\EventManager;
 
 use Bitty\EventManager\Event;
 use Bitty\EventManager\EventInterface;
-use Bitty\Tests\EventManager\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class EventTest extends TestCase
 {
@@ -13,19 +13,19 @@ class EventTest extends TestCase
      */
     protected $fixture = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fixture = new Event();
+        $this->fixture = new Event(uniqid());
     }
 
-    public function testInstanceOf()
+    public function testInstanceOf(): void
     {
-        $this->assertInstanceOf(EventInterface::class, $this->fixture);
+        self::assertInstanceOf(EventInterface::class, $this->fixture);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $name = uniqid('AB_cd.1234');
 
@@ -33,21 +33,22 @@ class EventTest extends TestCase
 
         $actual = $this->fixture->getName();
 
-        $this->assertEquals($name, $actual);
+        self::assertEquals($name, $actual);
     }
 
-    public function testSetNameThrowsException()
+    public function testSetNameThrowsException(): void
     {
         $name = uniqid('name').'?';
 
         $message = 'Event name "'.$name.'" is invalid. Only alpha-numeric '
             .'characters, underscores, and periods allowed';
-        $this->setExpectedException(\InvalidArgumentException::class, $message);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
 
         $this->fixture->setName($name);
     }
 
-    public function testGetTarget()
+    public function testGetTarget(): void
     {
         $target = uniqid('target');
 
@@ -55,10 +56,10 @@ class EventTest extends TestCase
 
         $actual = $this->fixture->getTarget();
 
-        $this->assertEquals($target, $actual);
+        self::assertEquals($target, $actual);
     }
 
-    public function testGetParams()
+    public function testGetParams(): void
     {
         $params = [uniqid(), uniqid()];
 
@@ -66,10 +67,10 @@ class EventTest extends TestCase
 
         $actual = $this->fixture->getParams();
 
-        $this->assertEquals($params, $actual);
+        self::assertEquals($params, $actual);
     }
 
-    public function testGetParam()
+    public function testGetParam(): void
     {
         $name   = uniqid('name');
         $value  = uniqid('value');
@@ -79,31 +80,31 @@ class EventTest extends TestCase
 
         $actual = $this->fixture->getParam($name);
 
-        $this->assertEquals($value, $actual);
+        self::assertEquals($value, $actual);
     }
 
-    public function testGetParamNotSet()
+    public function testGetParamNotSet(): void
     {
         $actual = $this->fixture->getParam(uniqid());
 
-        $this->assertNull($actual);
+        self::assertNull($actual);
     }
 
-    public function testPropagationStopped()
+    public function testPropagationStopped(): void
     {
         $this->fixture->stopPropagation(true);
 
         $actual = $this->fixture->isPropagationStopped();
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
-    public function testPropagationNotStopped()
+    public function testPropagationNotStopped(): void
     {
         $this->fixture->stopPropagation(false);
 
         $actual = $this->fixture->isPropagationStopped();
 
-        $this->assertFalse($actual);
+        self::assertFalse($actual);
     }
 }

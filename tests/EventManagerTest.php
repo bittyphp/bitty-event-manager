@@ -7,7 +7,8 @@ use Bitty\EventManager\EventInterface;
 use Bitty\EventManager\EventManager;
 use Bitty\EventManager\EventManagerInterface;
 use Bitty\Tests\EventManager\Stubs\InvokableStubInterface;
-use Bitty\Tests\EventManager\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class EventManagerTest extends TestCase
 {
@@ -16,26 +17,26 @@ class EventManagerTest extends TestCase
      */
     protected $fixture = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->fixture = new EventManager();
     }
 
-    public function testInstanceOf()
+    public function testInstanceOf(): void
     {
-        $this->assertInstanceOf(EventManagerInterface::class, $this->fixture);
+        self::assertInstanceOf(EventManagerInterface::class, $this->fixture);
     }
 
-    public function testAttachReturnsTrue()
+    public function testAttachReturnsTrue(): void
     {
         $actual = $this->fixture->attach(uniqid(), $this->createCallback());
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
-    public function testCorrectCallbacksTriggered()
+    public function testCorrectCallbacksTriggered(): void
     {
         $nameA     = uniqid('name');
         $nameB     = uniqid('name');
@@ -49,21 +50,21 @@ class EventManagerTest extends TestCase
         $this->fixture->attach($nameB, $callbackC);
         $this->fixture->attach($nameA, $callbackD);
 
-        $callbackB->expects($this->never())->method('__invoke');
-        $callbackC->expects($this->never())->method('__invoke');
+        $callbackB->expects(self::never())->method('__invoke');
+        $callbackC->expects(self::never())->method('__invoke');
 
-        $callbackA->expects($this->once())
+        $callbackA->expects(self::once())
             ->method('__invoke')
-            ->with($this->isInstanceOf(EventInterface::class));
+            ->with(self::isInstanceOf(EventInterface::class));
 
-        $callbackD->expects($this->once())
+        $callbackD->expects(self::once())
             ->method('__invoke')
-            ->with($this->isInstanceOf(EventInterface::class));
+            ->with(self::isInstanceOf(EventInterface::class));
 
         $this->fixture->trigger($nameA);
     }
 
-    public function testCallbacksTriggeredInCorrectOrder()
+    public function testCallbacksTriggeredInCorrectOrder(): void
     {
         $name      = uniqid('name');
         $callbackA = $this->createCallback('A');
@@ -79,10 +80,10 @@ class EventManagerTest extends TestCase
         $event = new Event($name);
         $this->fixture->trigger($event);
 
-        $this->assertEquals(['B', 'A', 'D', 'C'], $event->getParams());
+        self::assertEquals(['B', 'A', 'D', 'C'], $event->getParams());
     }
 
-    public function testDetachCallback()
+    public function testDetachCallback(): void
     {
         $name      = uniqid('name');
         $callbackA = $this->createCallback();
@@ -94,20 +95,20 @@ class EventManagerTest extends TestCase
         $this->fixture->attach($name, $callbackC);
         $this->fixture->detach($name, $callbackB);
 
-        $callbackB->expects($this->never())->method('__invoke');
+        $callbackB->expects(self::never())->method('__invoke');
 
-        $callbackA->expects($this->once())
+        $callbackA->expects(self::once())
             ->method('__invoke')
-            ->with($this->isInstanceOf(EventInterface::class));
+            ->with(self::isInstanceOf(EventInterface::class));
 
-        $callbackC->expects($this->once())
+        $callbackC->expects(self::once())
             ->method('__invoke')
-            ->with($this->isInstanceOf(EventInterface::class));
+            ->with(self::isInstanceOf(EventInterface::class));
 
         $this->fixture->trigger($name);
     }
 
-    public function testDetachSuccess()
+    public function testDetachSuccess(): void
     {
         $name     = uniqid('name');
         $callback = $this->createCallback();
@@ -116,17 +117,17 @@ class EventManagerTest extends TestCase
 
         $actual = $this->fixture->detach($name, $callback);
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
-    public function testDetachNonExistentEvent()
+    public function testDetachNonExistentEvent(): void
     {
         $actual = $this->fixture->detach(uniqid(), $this->createCallback());
 
-        $this->assertFalse($actual);
+        self::assertFalse($actual);
     }
 
-    public function testDetachNonExistentCallback()
+    public function testDetachNonExistentCallback(): void
     {
         $name      = uniqid('name');
         $callbackA = $this->createCallback();
@@ -136,10 +137,10 @@ class EventManagerTest extends TestCase
 
         $actual = $this->fixture->detach($name, $callbackB);
 
-        $this->assertFalse($actual);
+        self::assertFalse($actual);
     }
 
-    public function testClearListeners()
+    public function testClearListeners(): void
     {
         $nameA     = uniqid('name');
         $nameB     = uniqid('name');
@@ -153,33 +154,37 @@ class EventManagerTest extends TestCase
 
         $this->fixture->clearListeners($nameA);
 
-        $callbackA->expects($this->never())->method('__invoke');
-        $callbackC->expects($this->never())->method('__invoke');
+        $callbackA->expects(self::never())->method('__invoke');
+        $callbackC->expects(self::never())->method('__invoke');
 
         $this->fixture->trigger($nameA);
 
-        $callbackB->expects($this->once())
+        $callbackB->expects(self::once())
             ->method('__invoke')
-            ->with($this->isInstanceOf(EventInterface::class));
+            ->with(self::isInstanceOf(EventInterface::class));
 
         $this->fixture->trigger($nameB);
     }
 
-    public function testClearNonExistentListeners()
+    public function testClearNonExistentListeners(): void
     {
-        $actual = $this->fixture->clearListeners(uniqid());
+        try {
+            $this->fixture->clearListeners(uniqid());
+        } catch (\Exception $e) {
+            self::fail();
+        }
 
-        $this->assertNull($actual);
+        self::assertTrue(true);
     }
 
-    public function testTriggerNonExistentEvent()
+    public function testTriggerNonExistentEvent(): void
     {
         $actual = $this->fixture->trigger(uniqid());
 
-        $this->assertFalse($actual);
+        self::assertFalse($actual);
     }
 
-    public function testTriggerReturnsCallbackResponse()
+    public function testTriggerReturnsCallbackResponse(): void
     {
         $name      = uniqid('name');
         $response  = uniqid('response');
@@ -193,10 +198,10 @@ class EventManagerTest extends TestCase
 
         $actual = $this->fixture->trigger($name);
 
-        $this->assertEquals($response, $actual);
+        self::assertEquals($response, $actual);
     }
 
-    public function testEventPropagationStopped()
+    public function testEventPropagationStopped(): void
     {
         $name      = uniqid('name');
         $callbackA = $this->createMock(InvokableStubInterface::class);
@@ -210,8 +215,8 @@ class EventManagerTest extends TestCase
         $this->fixture->attach($name, $callbackA, 1);
         $this->fixture->attach($name, $callbackB);
 
-        $callbackA->expects($this->once())->method('__invoke');
-        $callbackB->expects($this->never())->method('__invoke');
+        $callbackA->expects(self::once())->method('__invoke');
+        $callbackB->expects(self::never())->method('__invoke');
 
         $this->fixture->trigger($name);
     }
@@ -221,9 +226,9 @@ class EventManagerTest extends TestCase
      *
      * @param string|null $name
      *
-     * @return InvokableStubInterface
+     * @return InvokableStubInterface|MockObject
      */
-    protected function createCallback($name = null)
+    protected function createCallback(string $name = null): InvokableStubInterface
     {
         $callback = $this->createMock(InvokableStubInterface::class);
         $callback->method('__invoke')->willReturnCallback(
@@ -231,6 +236,9 @@ class EventManagerTest extends TestCase
                 $params   = $event->getParams();
                 $params[] = $name;
                 $event->setParams($params);
+
+                return function () {
+                };
             }
         );
 

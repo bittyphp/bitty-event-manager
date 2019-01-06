@@ -15,29 +15,29 @@ interface EventManagerInterface
      * Attaches a listener to an event
      *
      * @param string $event the event to attach too
-     * @param callback $callback a callable function
+     * @param callable $callback a callable function
      * @param int $priority the priority at which the $callback executed
      *
      * @return bool true on success false on failure
      */
-    public function attach($event, $callback, $priority = 0);
+    public function attach(string $event, callable $callback, int $priority = 0): bool;
 
     /**
      * Detaches a listener from an event
      *
      * @param string $event the event to attach too
-     * @param callback $callback a callable function
+     * @param callable $callback a callable function
      *
      * @return bool true on success false on failure
      */
-    public function detach($event, $callback);
+    public function detach(string $event, callable $callback): bool;
 
     /**
      * Clear all listeners for a given event
      *
      * @param string $event
      */
-    public function clearListeners($event);
+    public function clearListeners(string $event): void;
 
     /**
      * Trigger an event

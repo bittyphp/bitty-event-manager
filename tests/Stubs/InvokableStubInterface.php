@@ -6,6 +6,8 @@ interface InvokableStubInterface
 {
     /**
      * Mock invokable.
+     *
+     * @return callable|string
      */
     public function __invoke();
 }
