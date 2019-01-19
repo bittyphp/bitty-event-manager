@@ -1,5 +1,5 @@
 {
-    "name": "bittyphp/bitty-event-manager",
+    "name": "bittyphp/event-manager",
     "type": "library",
     "description": "PSR-14 Event Manager implementation.",
     "license": "MIT",
