@@ -1,9 +1,9 @@
 # Bitty Event Manager
 
-[![Build Status](https://travis-ci.org/bittyphp/bitty-event-manager.svg?branch=master)](https://travis-ci.org/bittyphp/bitty-event-manager)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/097658a564cb4402a406961041e29b4e)](https://www.codacy.com/app/bittyphp/bitty-event-manager)
-[![Total Downloads](https://poser.pugx.org/bittyphp/bitty-event-manager/downloads)](https://packagist.org/packages/bittyphp/bitty-event-manager)
-[![License](https://poser.pugx.org/bittyphp/bitty-event-manager/license)](https://packagist.org/packages/bittyphp/bitty-event-manager)
+[![Build Status](https://travis-ci.org/bittyphp/event-manager.svg?branch=master)](https://travis-ci.org/bittyphp/event-manager)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/097658a564cb4402a406961041e29b4e)](https://www.codacy.com/app/bittyphp/event-manager)
+[![Total Downloads](https://poser.pugx.org/bittyphp/event-manager/downloads)](https://packagist.org/packages/bittyphp/event-manager)
+[![License](https://poser.pugx.org/bittyphp/event-manager/license)](https://packagist.org/packages/bittyphp/event-manager)
 
 Bitty comes with an Event Manager that follows the proposed  [PSR-14](https://github.com/php-fig/fig-standards/blob/master/proposed/event-manager.md) standard. The event manager can be used to attach listeners to certain events or actions that happen. When the system triggers those events, all the listeners for that event will automatically be called.
 
@@ -14,7 +14,7 @@ This can be used for any number of things, some of which might include: triggeri
 It's best to install using [Composer](https://getcomposer.org/).
 
 ```sh
-$ composer require bittyphp/bitty-event-manager
+$ composer require bittyphp/event-manager
 ```
 
 ## Creating an Event
