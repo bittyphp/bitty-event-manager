@@ -11,32 +11,24 @@ class EventManager implements EventManagerInterface
     /**
      * @var array[]
      */
-    protected $events = [];
+    protected $callbacks = [];
+
+    /**
+     * @var bool[]
+     */
+    protected $sorted = [];
 
     /**
      * {@inheritDoc}
      */
     public function attach(string $event, callable $callback, int $priority = 0): bool
     {
-        $events = [];
-        if (isset($this->events[$event])) {
-            $events = $this->events[$event];
-        }
-
-        $events[] = [
+        $this->callbacks[$event][] = [
             'callback' => $callback,
             'priority' => $priority,
         ];
 
-        usort($events, function ($a, $b) {
-            if ($a['priority'] === $b['priority']) {
-                return 0;
-            }
-
-            return $a['priority'] < $b['priority'] ? 1 : -1;
-        });
-
-        $this->events[$event] = $events;
+        $this->sorted[$event] = false;
 
         return true;
     }
@@ -46,24 +38,26 @@ class EventManager implements EventManagerInterface
      */
     public function detach(string $event, callable $callback): bool
     {
-        if (!isset($this->events[$event])) {
+        if (!isset($this->callbacks[$event])) {
             return false;
         }
 
-        $found  = false;
-        $events = [];
-        foreach ($this->events[$event] as $data) {
+        $found = -1;
+        foreach ($this->callbacks[$event] as $index => $data) {
             if ($callback === $data['callback']) {
-                $found = true;
+                $found = $index;
+
                 continue;
             }
-
-            $events[] = $data;
         }
 
-        $this->events[$event] = $events;
+        if ($found > -1) {
+            unset($this->callbacks[$event][$found]);
 
-        return $found;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -71,8 +65,8 @@ class EventManager implements EventManagerInterface
      */
     public function clearListeners(string $event): void
     {
-        if (isset($this->events[$event])) {
-            unset($this->events[$event]);
+        if (isset($this->callbacks[$event])) {
+            unset($this->callbacks[$event]);
         }
     }
 
@@ -88,12 +82,14 @@ class EventManager implements EventManagerInterface
             $event = new Event($name, $target, $params);
         }
 
-        if (!isset($this->events[$name])) {
+        if (!isset($this->callbacks[$name])) {
             return false;
         }
 
+        $this->sortCallbacks($name);
+
         $response = null;
-        foreach ($this->events[$name] as $data) {
+        foreach ($this->callbacks[$name] as $data) {
             $response = $data['callback']($event, $response);
 
             if ($event->isPropagationStopped()) {
@@ -102,5 +98,27 @@ class EventManager implements EventManagerInterface
         }
 
         return $response;
+    }
+
+    /**
+     * Sorts event callbacks, if not already sorted.
+     *
+     * @param string $event
+     */
+    protected function sortCallbacks(string $event): void
+    {
+        if (!empty($this->sorted[$event])) {
+            return;
+        }
+
+        usort($this->callbacks[$event], function ($a, $b) {
+            if ($a['priority'] === $b['priority']) {
+                return 0;
+            }
+
+            return $a['priority'] < $b['priority'] ? 1 : -1;
+        });
+
+        $this->sorted[$event] = true;
     }
 }
