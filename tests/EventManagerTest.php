@@ -64,6 +64,21 @@ class EventManagerTest extends TestCase
         $this->fixture->trigger($nameA);
     }
 
+    public function testMultipleTriggers(): void
+    {
+        $name     = uniqid('name');
+        $callback = $this->createCallback();
+
+        $this->fixture->attach($name, $callback);
+
+        $callback->expects(self::exactly(2))
+            ->method('__invoke')
+            ->with(self::isInstanceOf(EventInterface::class));
+
+        $this->fixture->trigger($name);
+        $this->fixture->trigger($name);
+    }
+
     public function testCallbacksTriggeredInCorrectOrder(): void
     {
         $name      = uniqid('name');
@@ -171,7 +186,7 @@ class EventManagerTest extends TestCase
         try {
             $this->fixture->clearListeners(uniqid());
         } catch (\Exception $e) {
-            self::fail();
+            self::fail($e->getMessage());
         }
 
         self::assertTrue(true);
