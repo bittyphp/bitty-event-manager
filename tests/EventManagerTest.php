@@ -86,16 +86,20 @@ class EventManagerTest extends TestCase
         $callbackB = $this->createCallback('B');
         $callbackC = $this->createCallback('C');
         $callbackD = $this->createCallback('D');
+        $callbackE = $this->createCallback('E');
+        $callbackF = $this->createCallback('F');
 
         $this->fixture->attach($name, $callbackA, 1);
         $this->fixture->attach($name, $callbackB, 10);
         $this->fixture->attach($name, $callbackC, -10);
-        $this->fixture->attach($name, $callbackD);
+        $this->fixture->attach($name, $callbackD, 0);
+        $this->fixture->attach($name, $callbackE);
+        $this->fixture->attach($name, $callbackF, 0);
 
         $event = new Event($name);
         $this->fixture->trigger($event);
 
-        self::assertEquals(['B', 'A', 'D', 'C'], $event->getParams());
+        self::assertEquals(['B', 'A', 'D', 'E', 'F', 'C'], $event->getParams());
     }
 
     public function testDetachCallback(): void
@@ -106,6 +110,7 @@ class EventManagerTest extends TestCase
         $callbackC = $this->createCallback();
 
         $this->fixture->attach($name, $callbackA);
+        $this->fixture->attach($name, $callbackB);
         $this->fixture->attach($name, $callbackB);
         $this->fixture->attach($name, $callbackC);
         $this->fixture->detach($name, $callbackB);

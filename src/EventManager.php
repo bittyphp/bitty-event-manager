@@ -14,7 +14,7 @@ class EventManager implements EventManagerInterface
     private $callbacks = [];
 
     /**
-     * @var bool[]
+     * @var string[]
      */
     private $sorted = [];
 
@@ -28,7 +28,7 @@ class EventManager implements EventManagerInterface
             'priority' => $priority,
         ];
 
-        $this->sorted[$event] = false;
+        $this->sorted[$event] = '';
 
         return true;
     }
@@ -42,22 +42,18 @@ class EventManager implements EventManagerInterface
             return false;
         }
 
-        $found = -1;
+        $indexes = [];
         foreach ($this->callbacks[$event] as $index => $data) {
             if ($callback === $data['callback']) {
-                $found = $index;
-
-                continue;
+                $indexes[] = $index;
             }
         }
 
-        if ($found > -1) {
-            unset($this->callbacks[$event][$found]);
-
-            return true;
+        foreach ($indexes as $index) {
+            unset($this->callbacks[$event][$index]);
         }
 
-        return false;
+        return !empty($indexes);
     }
 
     /**
@@ -112,13 +108,9 @@ class EventManager implements EventManagerInterface
         }
 
         usort($this->callbacks[$event], function ($a, $b) {
-            if ($a['priority'] === $b['priority']) {
-                return 0;
-            }
-
-            return $a['priority'] < $b['priority'] ? 1 : -1;
+            return $b['priority'] - $a['priority'];
         });
 
-        $this->sorted[$event] = true;
+        $this->sorted[$event] = $event;
     }
 }

@@ -101,7 +101,7 @@ class Event implements EventInterface
      */
     public function getParam(string $name)
     {
-        if (isset($this->params[$name]) || array_key_exists($name, $this->params)) {
+        if (array_key_exists($name, $this->params)) {
             return $this->params[$name];
         }
     }
