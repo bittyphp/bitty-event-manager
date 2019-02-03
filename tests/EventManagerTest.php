@@ -15,7 +15,7 @@ class EventManagerTest extends TestCase
     /**
      * @var EventManager
      */
-    protected $fixture = null;
+    private $fixture = null;
 
     protected function setUp(): void
     {
@@ -243,7 +243,7 @@ class EventManagerTest extends TestCase
      *
      * @return InvokableStubInterface|MockObject
      */
-    protected function createCallback(string $name = null): InvokableStubInterface
+    private function createCallback(string $name = null): InvokableStubInterface
     {
         $callback = $this->createMock(InvokableStubInterface::class);
         $callback->method('__invoke')->willReturnCallback(

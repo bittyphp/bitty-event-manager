@@ -11,12 +11,12 @@ class EventManager implements EventManagerInterface
     /**
      * @var array[]
      */
-    protected $callbacks = [];
+    private $callbacks = [];
 
     /**
      * @var bool[]
      */
-    protected $sorted = [];
+    private $sorted = [];
 
     /**
      * {@inheritDoc}
@@ -105,7 +105,7 @@ class EventManager implements EventManagerInterface
      *
      * @param string $event
      */
-    protected function sortCallbacks(string $event): void
+    private function sortCallbacks(string $event): void
     {
         if (!empty($this->sorted[$event])) {
             return;

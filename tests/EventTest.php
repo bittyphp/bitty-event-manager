@@ -11,7 +11,7 @@ class EventTest extends TestCase
     /**
      * @var Event
      */
-    protected $fixture = null;
+    private $fixture = null;
 
     protected function setUp(): void
     {
