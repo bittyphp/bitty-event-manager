@@ -9,22 +9,22 @@ class Event implements EventInterface
     /**
      * @var string
      */
-    protected $name = null;
+    private $name = null;
 
     /**
      * @var null|string|object
      */
-    protected $target = null;
+    private $target = null;
 
     /**
      * @var mixed[]
      */
-    protected $params = null;
+    private $params = null;
 
     /**
      * @var bool
      */
-    protected $isPropagationStopped = false;
+    private $isPropagationStopped = false;
 
     /**
      * @param string $name
