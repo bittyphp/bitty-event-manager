@@ -29,6 +29,17 @@ class EventTest extends TestCase
     {
         $name = uniqid('AB_cd.1234');
 
+        $this->fixture = new Event($name);
+
+        $actual = $this->fixture->getName();
+
+        self::assertEquals($name, $actual);
+    }
+
+    public function testSetName(): void
+    {
+        $name = uniqid('AB_cd.1234');
+
         $this->fixture->setName($name);
 
         $actual = $this->fixture->getName();
@@ -52,6 +63,17 @@ class EventTest extends TestCase
     {
         $target = uniqid('target');
 
+        $this->fixture = new Event(uniqid(), $target);
+
+        $actual = $this->fixture->getTarget();
+
+        self::assertEquals($target, $actual);
+    }
+
+    public function testSetTarget(): void
+    {
+        $target = uniqid('target');
+
         $this->fixture->setTarget($target);
 
         $actual = $this->fixture->getTarget();
@@ -60,6 +82,17 @@ class EventTest extends TestCase
     }
 
     public function testGetParams(): void
+    {
+        $params = [uniqid(), uniqid()];
+
+        $this->fixture = new Event(uniqid(), null, $params);
+
+        $actual = $this->fixture->getParams();
+
+        self::assertEquals($params, $actual);
+    }
+
+    public function testSetParams(): void
     {
         $params = [uniqid(), uniqid()];
 
