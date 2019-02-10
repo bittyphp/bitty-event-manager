@@ -190,7 +190,7 @@ class EventManagerTest extends TestCase
     {
         try {
             $this->fixture->clearListeners(uniqid());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             self::fail($e->getMessage());
         }
 
@@ -248,7 +248,7 @@ class EventManagerTest extends TestCase
      *
      * @return InvokableStubInterface|MockObject
      */
-    private function createCallback(string $name = null): InvokableStubInterface
+    private function createCallback(?string $name = null): InvokableStubInterface
     {
         $callback = $this->createMock(InvokableStubInterface::class);
         $callback->method('__invoke')->willReturnCallback(

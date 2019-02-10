@@ -44,9 +44,11 @@ class EventManager implements EventManagerInterface
 
         $indexes = [];
         foreach ($this->callbacks[$event] as $index => $data) {
-            if ($callback === $data['callback']) {
-                $indexes[] = $index;
+            if ($callback !== $data['callback']) {
+                continue;
             }
+
+            $indexes[] = $index;
         }
 
         foreach ($indexes as $index) {
@@ -61,9 +63,11 @@ class EventManager implements EventManagerInterface
      */
     public function clearListeners(string $event): void
     {
-        if (isset($this->callbacks[$event])) {
-            unset($this->callbacks[$event]);
+        if (!isset($this->callbacks[$event])) {
+            return;
         }
+
+        unset($this->callbacks[$event]);
     }
 
     /**
