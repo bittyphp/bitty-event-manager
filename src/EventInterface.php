@@ -26,14 +26,14 @@ interface EventInterface
     /**
      * Set the event target
      *
-     * @param null|string|object $target
+     * @param string|object|null $target
      */
     public function setTarget($target): void;
 
     /**
      * Get target/context from which event was triggered
      *
-     * @return null|string|object
+     * @return string|object|null
      */
     public function getTarget();
 

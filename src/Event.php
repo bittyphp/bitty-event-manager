@@ -12,7 +12,7 @@ class Event implements EventInterface
     private $name = null;
 
     /**
-     * @var null|string|object
+     * @var string|object|null
      */
     private $target = null;
 
@@ -28,7 +28,7 @@ class Event implements EventInterface
 
     /**
      * @param string $name
-     * @param null|string|object $target
+     * @param string|object|null $target
      * @param mixed[] $params
      */
     public function __construct(string $name, $target = null, array $params = [])

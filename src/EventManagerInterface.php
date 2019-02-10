@@ -45,7 +45,7 @@ interface EventManagerInterface
      * Can accept an EventInterface or will create one if not passed
      *
      * @param string|EventInterface $event
-     * @param null|object|string $target
+     * @param object|string|null $target
      * @param mixed[] $params
      *
      * @return mixed
