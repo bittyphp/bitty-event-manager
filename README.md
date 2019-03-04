@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/bittyphp/event-manager/downloads)](https://packagist.org/packages/bittyphp/event-manager)
 [![License](https://poser.pugx.org/bittyphp/event-manager/license)](https://packagist.org/packages/bittyphp/event-manager)
 
-Bitty comes with an Event Manager that follows the proposed  [PSR-14](https://github.com/php-fig/fig-standards/blob/master/proposed/event-manager.md) standard. The event manager can be used to attach listeners to certain events or actions that happen. When the system triggers those events, all the listeners for that event will automatically be called.
+Bitty comes with an Event Manager that follows the original, **proposed**  [PSR-14](https://github.com/php-fig/fig-standards/blob/f763070c718aeb0e1a3c953ad99682ea2e994c5d/proposed/event-manager.md) standard. The event manager can be used to attach listeners to certain events or actions that happen. When the system triggers those events, all the listeners for that event will automatically be called.
 
 This can be used for any number of things, some of which might include: triggering an alert on multiple failed logins, clearing a cache when the information has been updated, or maybe send an email when the status of something changes. There's unlimited possibilities for what you can do!
 
