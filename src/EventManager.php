@@ -14,7 +14,7 @@ class EventManager implements EventManagerInterface
     private $callbacks = [];
 
     /**
-     * @var string[]
+     * @var bool[]
      */
     private $sorted = [];
 
@@ -27,8 +27,7 @@ class EventManager implements EventManagerInterface
             'callback' => $callback,
             'priority' => $priority,
         ];
-
-        $this->sorted[$event] = '';
+        $this->sorted[$event] = false;
 
         return true;
     }
@@ -42,20 +41,19 @@ class EventManager implements EventManagerInterface
             return false;
         }
 
-        $indexes = [];
+        $detached = false;
         foreach ($this->callbacks[$event] as $index => $data) {
-            if ($callback !== $data['callback']) {
-                continue;
+            if ($callback === $data['callback']) {
+                unset($this->callbacks[$event][$index]);
+                $detached = true;
             }
-
-            $indexes[] = $index;
+        }
+        
+        if (empty($this->callbacks[$event])) {
+            $this->clearListeners($event);
         }
 
-        foreach ($indexes as $index) {
-            unset($this->callbacks[$event][$index]);
-        }
-
-        return !empty($indexes);
+        return $detached;
     }
 
     /**
@@ -63,11 +61,7 @@ class EventManager implements EventManagerInterface
      */
     public function clearListeners(string $event): void
     {
-        if (!isset($this->callbacks[$event])) {
-            return;
-        }
-
-        unset($this->callbacks[$event]);
+        unset($this->callbacks[$event], $this->sorted[$event]);
     }
 
     /**
@@ -99,7 +93,7 @@ class EventManager implements EventManagerInterface
 
         return $response;
     }
-
+    
     /**
      * Sorts event callbacks, if not already sorted.
      *
@@ -107,14 +101,13 @@ class EventManager implements EventManagerInterface
      */
     private function sortCallbacks(string $event): void
     {
-        if (!empty($this->sorted[$event])) {
-            return;
+        if (! $this->sorted[$name]) {
+            // order by priority: from lowest to highest 
+            array_multisort($this->callbacks[$name], array_column($this->callbacks[$name], 'priority'));
+            // fix order: from highest to lowest
+            $this->callbacks[$name] = array_reverse($this->callbacks[$name]);
+            
+            $this->sorted[$name] = true;
         }
-
-        usort($this->callbacks[$event], function ($a, $b) {
-            return $b['priority'] - $a['priority'];
-        });
-
-        $this->sorted[$event] = $event;
     }
 }
