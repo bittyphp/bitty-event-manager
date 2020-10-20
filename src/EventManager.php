@@ -101,13 +101,13 @@ class EventManager implements EventManagerInterface
      */
     private function sortCallbacks(string $event): void
     {
-        if (! $this->sorted[$name]) {
+        if (! $this->sorted[$event]) {
             // order by priority: from lowest to highest 
-            array_multisort($this->callbacks[$name], array_column($this->callbacks[$name], 'priority'));
+            array_multisort($this->callbacks[$event], array_column($this->callbacks[$event], 'priority'));
             // fix order: from highest to lowest
-            $this->callbacks[$name] = array_reverse($this->callbacks[$name]);
+            $this->callbacks[$event] = array_reverse($this->callbacks[$event]);
             
-            $this->sorted[$name] = true;
+            $this->sorted[$event] = true;
         }
     }
 }
